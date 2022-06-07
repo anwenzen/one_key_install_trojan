@@ -57,7 +57,8 @@ read domain
 echo -ne "${yellow}Enter your email:${none}"
 read email
 
-echo "{
+cat > "${TargetDir}/Caddyfile" <<EOF
+{
 	servers {
 		listener_wrappers {
 			trojan
@@ -89,10 +90,10 @@ ${domain}  {
 		}
 	}
     handle_errors {
-        respond  \"<h1 align=\"center\">{http.error.status_code} {http.error.status_text}</h1>\"
+        respond  "<h1 align=\"center\">{http.error.status_code} {http.error.status_text}</h1>"
     }
-}" > "${TargetDir}/Caddyfile"
-
+}"
+EOF
 
 sudo rm -rf /var/website
 git clone https://github.com/anwenzen/anwenzen.github.io.git
