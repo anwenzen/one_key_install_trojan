@@ -1,0 +1,177 @@
+{
+    "apps": {
+        "http": {
+            "servers": {
+                "srv0": {
+                    "listen": [
+                        ":443"
+                    ],
+                    "listener_wrappers": [
+                        {
+                            "wrapper": "trojan"
+                        }
+                    ],
+                    "routes": [
+                        {
+                            "match": [
+                                {
+                                    "host": [
+                                        "anwenzen.com"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "encodings": {
+                                                        "gzip": {}
+                                                    },
+                                                    "handler": "encode",
+                                                    "prefer": [
+                                                        "gzip"
+                                                    ]
+                                                },
+                                                {
+                                                    "handler": "subroute",
+                                                    "routes": [
+                                                        {
+                                                            "handle": [
+                                                                {
+                                                                    "handler": "reverse_proxy",
+                                                                    "upstreams": [
+                                                                        {
+                                                                            "dial": "127.0.0.1:8888"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "match": [
+                                                                {
+                                                                    "path": [
+                                                                        "/jupyter*"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "handle": [
+                                                                {
+                                                                    "connect_method": true,
+                                                                    "handler": "trojan",
+                                                                    "websocket": true
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "handle": [
+                                                                {
+                                                                    "browse": {},
+                                                                    "handler": "file_server",
+                                                                    "hide": [
+                                                                        "./Caddyfile"
+                                                                    ],
+                                                                    "root": "/var/website"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "terminal": true
+                        }
+                    ],
+                    "errors": {
+                        "routes": [
+                            {
+                                "match": [
+                                    {
+                                        "host": [
+                                            "anwenzen.com"
+                                        ]
+                                    }
+                                ],
+                                "handle": [
+                                    {
+                                        "handler": "subroute",
+                                        "routes": [
+                                            {
+                                                "handle": [
+                                                    {
+                                                        "body": "\u003ch1 align=\"center\"\u003e{http.error.status_code} {http.error.status_text}\u003c/h1\u003e",
+                                                        "handler": "static_response"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "terminal": true
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "tls": {
+            "automation": {
+                "policies": [
+                    {
+                        "subjects": [
+                            "anwenzen.com"
+                        ],
+                        "issuers": [
+                            {
+                                "email": "anwenzen@qq.com",
+                                "module": "acme"
+                            },
+                            {
+                                "email": "anwenzen@qq.com",
+                                "module": "zerossl"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "trojan": {
+            "upstream": {
+                "upstream": "caddy"
+            },
+            "proxy": {
+                "proxy": "no_proxy"
+            },
+            "users": [
+                ""
+            ]
+        }
+    },
+    "logging": {
+        "logs": {
+            "INFO": {
+                "writer": {
+                    "output": "file",
+                    "filename": "/var/log/caddy/caddy.log",
+                    "roll": true,
+                    "roll_size_mb": 10,
+                    "roll_gzip": true,
+                    "roll_local_time": true,
+                    "roll_keep": 3,
+                    "roll_keep_days": 30
+                },
+                "encoder": {
+                    "format": "console",
+                    "time_format": "wall_milli"
+                },
+                "level": "INFO"
+            }
+        }
+    }
+}
