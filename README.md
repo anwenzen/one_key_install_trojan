@@ -5,4 +5,4 @@
 ### 3.Ubuntu or like ubuntu system
 
 
-## thanks: [caddy](https://github.com/caddyserver/caddy),  [caddy-trojan](https://github.com/imgk/caddy-trojan), [SS-Rule-Snippet](https://github.com/Hackl0us/SS-Rule-Snippet)
+## thanks: [caddy](https://github.com/caddyserver/caddy),  [caddy-trojan](https://github.com/imgk/caddy-trojan), [clash-rules](https://github.com/Loyalsoldier/clash-rules)
