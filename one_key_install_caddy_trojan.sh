@@ -195,6 +195,7 @@ external-controller: 0.0.0.0:9090
 
 # profile:
   # Store the `select` results in \$HOME/.config/clash/.cache
+
   # set false If you don't want this behavior
   # when two different configurations have groups with the same name, the selected values are shared
   # store-selected: true
