@@ -40,6 +40,7 @@ The.Example.com {
 		respond  "{http.error.status_code} {http.error.status_text}"
 	}
 }
+
 The.Example@.com  {
 	encode gzip
 	tls The.Email@Example.com

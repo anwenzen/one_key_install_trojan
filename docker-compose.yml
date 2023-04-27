@@ -90,6 +90,7 @@ services:
     depends_on:
       - FileBrowser
 
+
 networks:
   web:
     driver: bridge

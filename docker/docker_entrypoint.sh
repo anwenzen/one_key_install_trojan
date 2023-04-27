@@ -25,6 +25,7 @@ cat > /etc/caddy/Caddyfile <<EOF
 }
 
 
+
 ${MYDOMAIN)  {
 	encode gzip
 	#tls The.Email@Example.com

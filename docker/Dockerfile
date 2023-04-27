@@ -6,4 +6,5 @@ RUN chmod +x /docker_entrypoint.sh \
 EXPOSE 80
 EXPOSE 443
 
+
 #ENTRYPOINT ["/docker_entrypoint.sh"]

@@ -485,6 +485,7 @@ rules:
   - MATCH,PROXY
 EOF
 }
+
 create_quanxfile(){
 cat > '/var/website/v2/quanx_utf8.conf' <<EOF
 ;2022-09-26: 增加对各个模块的说明(部分内容只适用于 1.1.0 以上版本)

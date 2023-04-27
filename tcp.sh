@@ -11,6 +11,7 @@ export PATH
 #   推荐使用5.5以上内核直接开启的bbr速度最佳
 #=================================================
 
+
 sh_ver="1.4.0"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
