@@ -1,0 +1,98 @@
+version: "3.8"
+
+services:
+
+  Aria2-Pro:
+    container_name: aria2-pro
+    image: p3terx/aria2-pro
+    environment:
+      - PUID=$UID
+      - PGID=$GID
+      - UMASK_SET=022
+      - RPC_SECRET=Anwenzen
+      - RPC_PORT=16800
+      - LISTEN_PORT=6888
+      - DISK_CACHE=64M
+      - IPV6_MODE=false
+      - UPDATE_TRACKERS=true
+      - TZ=Asia/Shanghai
+    volumes:
+      - ${PWD}/aria2-config:/config
+      - ${PWD}/aria2-downloads:/downloads
+    # If you use host network mode, then no port mapping is required.
+    # This is the easiest way to use IPv6 networks.
+    # network_mode: host
+    network_mode: bridge
+    ports:
+      - 16800:16800
+      - 6888:6888
+      - 6888:6888/udp
+    restart: unless-stopped
+    # Since Aria2 will continue to generate logs, limit the log size to 1M to prevent your hard disk from running out of space.
+    logging:
+      driver: json-file
+      options:
+        max-size: 1m
+
+  # AriaNg is just a static web page, usually you only need to deploy on a single host.
+  # AriaNg:
+  #   container_name: ariang
+  #   image: p3terx/ariang
+  #   command: --port 6880 --ipv6
+  #   network_mode: host
+  #   # network_mode: bridge
+  #   # ports:
+  #   #   - 6880:6880
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: 1m
+
+  FileBrowser:
+    container_name: filebrowser
+    image: filebrowser/filebrowser
+    environment:
+      - PUID=$UID
+      - PGID=$GID
+    volumes:
+      - ${PWD}/aria2-config/.filebrowser.json:/.filebrowser.json 
+      - ${PWD}/aria2-downloads:/srv
+    # network_mode: bridge
+    # ports:
+    #   - 9870:9870
+    networks:
+      web:
+        ipv4_address: 172.18.0.2
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 1m
+
+  CaddyTrojan:
+    container_name: caddy-trojan
+    build: 
+      context: ${PWD}/docker
+      dockerfile: Dockerfile
+    environment:
+      - MYPASSWD=${MYPASSWD}
+      - MYDOMAIN=${MYDOMAIN}
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      web:
+        ipv4_address: 172.18.0.3
+    restart: unless-stopped
+    entrypoint: 
+      - /docker_entrypoint.sh
+    depends_on:
+      - FileBrowser
+
+networks:
+  web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
