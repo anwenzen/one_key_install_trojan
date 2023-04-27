@@ -7,13 +7,13 @@
 	trojan {
 		caddy
 		no_proxy
-		users b05410835e35f072e0d74b09fa80c3b3r
+		users WriteYourPassWordInHere
 	}
 }
 
-anwenzen.com {
+The.Example.com {
 	encode gzip
-	tls anwenzen@qq.com
+	tls The.Email@Example.com
 	route {
 		# reverse_proxy /download* 127.0.0.1:9870 {
 		# 	header_up Host {host}
@@ -22,7 +22,7 @@ anwenzen.com {
 		# 	header_up X-Forwarded-Proto {scheme}
 		# }
 
-		reverse_proxy * https://jupyter.anwenzen.com {
+		reverse_proxy * https://The.Example.com {
 			 header_up Host {http.reverse_proxy.upstream.hostport}
 		}
 
@@ -40,9 +40,9 @@ anwenzen.com {
 		respond  "{http.error.status_code} {http.error.status_text}"
 	}
 }
-transport.anwenzen.com  {
+The.Example@.com  {
 	encode gzip
-	tls anwenzen@qq.com
+	tls The.Email@Example.com
 	route {
 		# reverse_proxy /download* 127.0.0.1:9870 {
 		# 	header_up Host {host}
@@ -51,7 +51,7 @@ transport.anwenzen.com  {
 		# 	header_up X-Forwarded-Proto {scheme}
 		# }
 
-		reverse_proxy * https://gpt.anwenzen.com {
+		reverse_proxy * https://The.Example.com {
 			 header_up Host {http.reverse_proxy.upstream.hostport}
 		}
 	}

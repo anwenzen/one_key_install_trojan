@@ -27,7 +27,7 @@ cat > /etc/caddy/Caddyfile <<EOF
 
 ${MYDOMAIN)  {
 	encode gzip
-	tls anwenzen@icloud.com
+	#tls The.Email@Example.com
 	route {
 		reverse_proxy /download* 172.18.0.2:9870 {
 			header_up Host {host}
@@ -47,7 +47,7 @@ ${MYDOMAIN)  {
 		}
 	}
 	handle_errors {
-		respond  "<h1 align=\"center\">{http.error.status_code} {http.error.status_text}</h1>"
+		respond  "{http.error.status_code} {http.error.status_text}"
 	}
 }
 EOF
