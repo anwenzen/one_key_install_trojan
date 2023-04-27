@@ -1,0 +1,61 @@
+{	order trojan before route
+	servers {
+		listener_wrappers {
+			trojan
+		}
+	}
+	trojan {
+		caddy
+		no_proxy
+		users b05410835e35f072e0d74b09fa80c3b3r
+	}
+}
+
+anwenzen.com {
+	encode gzip
+	tls anwenzen@qq.com
+	route {
+		# reverse_proxy /download* 127.0.0.1:9870 {
+		# 	header_up Host {host}
+		# 	header_up X-Real-IP {remote}
+		# 	header_up X-Forwarded-For {remote}
+		# 	header_up X-Forwarded-Proto {scheme}
+		# }
+
+		reverse_proxy * https://jupyter.anwenzen.com {
+			 header_up Host {http.reverse_proxy.upstream.hostport}
+		}
+
+		trojan {
+			connect_method
+			websocket
+		}
+
+		file_server {
+			root /var/website
+			browse
+		}
+	}
+	handle_errors {
+		respond  "{http.error.status_code} {http.error.status_text}"
+	}
+}
+transport.anwenzen.com  {
+	encode gzip
+	tls anwenzen@qq.com
+	route {
+		# reverse_proxy /download* 127.0.0.1:9870 {
+		# 	header_up Host {host}
+		# 	header_up X-Real-IP {remote}
+		# 	header_up X-Forwarded-For {remote}
+		# 	header_up X-Forwarded-Proto {scheme}
+		# }
+
+		reverse_proxy * https://gpt.anwenzen.com {
+			 header_up Host {http.reverse_proxy.upstream.hostport}
+		}
+	}
+	handle_errors {
+		respond  "{http.error.status_code} {http.error.status_text}"
+	}
+}

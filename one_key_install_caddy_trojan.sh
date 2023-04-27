@@ -83,18 +83,23 @@ ${domain}  {
   encode gzip
 	tls ${email}
 	route {
-		reverse_proxy /jupyter* 127.0.0.1:8888
+		reverse_proxy /download* 127.0.0.1:9870 {
+      header_up Host {host}
+      header_up X-Real-IP {remote}
+      header_up X-Forwarded-For {remote}
+      header_up X-Forwarded-Proto {scheme}
+    }
 		trojan {
 			connect_method
 			websocket
 		}
 		file_server {
 			root /var/website
-            browse
+      browse
 		}
 	}
     handle_errors {
-        respond  "<h1 align=\"center\">{http.error.status_code} {http.error.status_text}</h1>"
+      respond  "{http.error.status_code} {http.error.status_text}"
     }
 }
 EOF
@@ -106,7 +111,7 @@ caddy fmt ${TargetDir}/Caddyfile | caddy adapt > ${TargetDir}/caddy.json
 create_clashfile(){
 sudo rm -rf /var/website
 git clone https://github.com/anwenzen/anwenzen.github.io.git
-sudo mv "$(pwd)/anwenzen.github.io" /var/website
+sudo mv "${pwd}/anwenzen.github.io" /var/website
 sudo mkdir /var/website/v2
 
 
@@ -189,7 +194,8 @@ external-controller: 0.0.0.0:9090
   # 'alpha.clash.dev': '::1'
 
 # profile:
-  # Store the `select` results in $HOME/.config/clash/.cache
+  # Store the `select` results in \$HOME/.config/clash/.cache
+
   # set false If you don't want this behavior
   # when two different configurations have groups with the same name, the selected values are shared
   # store-selected: true
