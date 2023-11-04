@@ -7,13 +7,13 @@
 	trojan {
 		caddy
 		no_proxy
-		users WriteYourPassWordInHere
+		users {MYEMAIL}
 	}
 }
 
-The.Example.com {
+# {MYDOMAIN} {
 	encode gzip
-	tls The.Email@Example.com
+	tls {MYEMAIL}
 	route {
 		# reverse_proxy /download* 127.0.0.1:9870 {
 		# 	header_up Host {host}
@@ -22,9 +22,9 @@ The.Example.com {
 		# 	header_up X-Forwarded-Proto {scheme}
 		# }
 
-		reverse_proxy * https://The.Example.com {
-			 header_up Host {http.reverse_proxy.upstream.hostport}
-		}
+		# reverse_proxy * https://reverse-proxy.com {
+		#   header_up Host {http.reverse_proxy.upstream.hostport}
+		# }
 
 		trojan {
 			connect_method
@@ -34,26 +34,6 @@ The.Example.com {
 		file_server {
 			root /var/website
 			browse
-		}
-	}
-	handle_errors {
-		respond  "{http.error.status_code} {http.error.status_text}"
-	}
-}
-
-The.Example@.com  {
-	encode gzip
-	tls The.Email@Example.com
-	route {
-		# reverse_proxy /download* 127.0.0.1:9870 {
-		# 	header_up Host {host}
-		# 	header_up X-Real-IP {remote}
-		# 	header_up X-Forwarded-For {remote}
-		# 	header_up X-Forwarded-Proto {scheme}
-		# }
-
-		reverse_proxy * https://The.Example.com {
-			 header_up Host {http.reverse_proxy.upstream.hostport}
 		}
 	}
 	handle_errors {

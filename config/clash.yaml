@@ -75,7 +75,8 @@ external-controller: 0.0.0.0:9090
   # 'alpha.clash.dev': '::1'
 
 # profile:
-  # Store the `select` results in $HOME/.config/clash/.cache
+  # Store the `select` results in \$HOME/.config/clash/.cache
+
   # set false If you don't want this behavior
   # when two different configurations have groups with the same name, the selected values are shared
   # store-selected: true
@@ -101,7 +102,7 @@ dns:
   # use-hosts: true # lookup hosts and return IP record
 
   # search-domains: [local] # search domains for A/AAAA record
-  
+
   # Hostnames in this list will not be resolved with fake IPs
   # i.e. questions to these domain names will always be answered with their
   # real IP addresses
@@ -124,7 +125,6 @@ dns:
   # fallback:
   #   - tcp://1.1.1.1
   #   - 'tcp://1.1.1.1#en0'
-
 
   # If IP addresses resolved with servers in `nameservers` are in the specified
   # subnets below, they are considered invalid and results from `fallback`
@@ -155,13 +155,13 @@ dns:
 
   # See Here: https://github.com/Dreamacro/clash/wiki/Configuration
 proxies:
-  - name: "Example"
+  - name: {MYDOMAIN}
     type: trojan
-    server: The.Example.com
+    server: {MYDOMAIN}
     port: 443
-    password: WriteYourPassWordInHere
+    password: {MYEMAIL}
     udp: true
-    sni: The.Example.com
+    sni: {MYDOMAIN}
     alpn:
       - h2
       - http/1.1
@@ -179,14 +179,14 @@ proxy-groups:
   - name: "fallback-auto"
     type: fallback
     proxies:
-      - Example
+      - {MYDOMAIN}
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
 
   - name: "load-balance"
     type: load-balance
     proxies:
-      - Example
+      - {MYDOMAIN}
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
 
@@ -194,7 +194,7 @@ proxy-groups:
     type: select
     proxies:
       - fallback-auto
-      - Example
+      - {MYDOMAIN}
 
 # proxy-providers:
   # provider1:

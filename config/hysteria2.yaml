@@ -1,0 +1,28 @@
+# listen: :443 
+
+acme:
+  domains:
+    - {MYDOMAIN}
+  email: {MYEMAIL}
+  dir: /acme
+
+auth:
+  type: password
+  password: {MYEMAIL}
+
+bandwidth:
+  up: 1 gbps
+  down: 1 gbps
+  # bps 或 b（每秒比特数）
+  # kbps 或 kb 或 k（每秒千比特）
+  # mbps 或 mb 或 m（每秒兆比特）
+  # gbps 或 gb 或 g（每秒吉比特）
+  # tbps 或 tb 或 t（每秒太比特）
+
+masquerade: 
+  type: proxy
+  # file:
+  #   dir: /srv
+  proxy:
+    url: http://127.0.0.1:9870/
+    rewriteHost: true

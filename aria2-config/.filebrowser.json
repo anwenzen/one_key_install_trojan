@@ -1,8 +1,9 @@
 {
     "port": 9870,
-    "baseURL": "/download/",
+    "baseURL": "/download",
     "address": "",
     "log": "stdout",
     "database": "/database.db",
-    "root": "/srv"
+    "root": "/srv",
+    "noauth": true
 }

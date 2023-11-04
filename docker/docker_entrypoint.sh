@@ -28,7 +28,7 @@ cat > /etc/caddy/Caddyfile <<EOF
 
 ${MYDOMAIN)  {
 	encode gzip
-	#tls The.Email@Example.com
+	tls ${MYEMAIL}
 	route {
 		reverse_proxy /download* 172.18.0.2:9870 {
 			header_up Host {host}

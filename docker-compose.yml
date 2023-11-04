@@ -1,8 +1,7 @@
 version: "3.8"
 
 services:
-
-  Aria2-Pro:
+  aria2pro:
     container_name: aria2-pro
     image: p3terx/aria2-pro
     environment:
@@ -49,14 +48,14 @@ services:
   #     options:
   #       max-size: 1m
 
-  FileBrowser:
+  filebrowser:
     container_name: filebrowser
     image: filebrowser/filebrowser
     environment:
       - PUID=$UID
       - PGID=$GID
     volumes:
-      - ${PWD}/aria2-config/.filebrowser.json:/.filebrowser.json 
+      - ${PWD}/aria2-config/.filebrowser.json:/.filebrowser.json
       - ${PWD}/aria2-downloads:/srv
     # network_mode: bridge
     # ports:
@@ -69,15 +68,19 @@ services:
       driver: json-file
       options:
         max-size: 1m
+    depends_on:
+      - aria2pro
 
-  CaddyTrojan:
-    container_name: caddy-trojan
-    build: 
-      context: ${PWD}/docker
-      dockerfile: Dockerfile
+  caddy:
+    container_name: caddy
+    image: caddy:latest
     environment:
-      - MYPASSWD=${MYPASSWD}
-      - MYDOMAIN=${MYDOMAIN}
+      - MYPASSWD={MYEMAIL}
+      - MYDOMAIN={MYDOMAIN}
+    volumes:
+      - ${PWD}/config/Caddyfile:/etc/caddy/Caddyfile
+      - ${PWD}/aria2-downloads:/var/website
+      - ${PWD}/acme:/data/caddy
     ports:
       - 80:80
       - 443:443
@@ -85,11 +88,29 @@ services:
       web:
         ipv4_address: 172.18.0.3
     restart: unless-stopped
-    entrypoint: 
-      - /docker_entrypoint.sh
     depends_on:
-      - FileBrowser
+      - filebrowser
 
+  hysteria:
+    container_name: hysteria
+    image: tobyxdd/hysteria
+    restart: always
+    # network_mode: "host"
+    ports:
+      - 8080:8080
+      - 8443:8443
+      - 8080:8080/udp
+      - 8443:8443/udp
+    volumes:
+      - ${PWD}/acme:/acme
+      - ${PWD}/config/hysteria.yaml:/etc/hysteria.yaml
+    command: ["server", "-c", "/etc/hysteria.yaml"]
+    networks:
+      web:
+        ipv4_address: 172.18.0.4
+    
+    depends_on:
+      - caddy
 
 networks:
   web:
