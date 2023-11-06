@@ -1,13 +1,5 @@
 #!/bin/sh
 
-# if [[ "$MYPASSWD" == "123456" || "$MYPASSWD" == "MY_PASSWORD" ]]; then
-#     echo please reset your password && exit 1
-# fi
-
-# if [[ "$MYDOMAIN" == "1.1.1.1.nip.io" || "$MYDOMAIN" == "MY_DOMAIN.COM" ]]; then
-#     echo please reset your domain name && exit 1
-# fi
-
 # config
 cat > /etc/caddy/Caddyfile <<EOF 
 {
