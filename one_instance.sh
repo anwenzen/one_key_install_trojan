@@ -110,8 +110,7 @@ caddy fmt ${TargetDir}/Caddyfile | caddy adapt > ${TargetDir}/caddy.json
 
 create_website(){
   sudo rm -rf /var/website
-  git clone https://github.com/anwenzen/anwenzen.github.io.git
-  sudo mv "${pwd}/anwenzen.github.io" /var/website
+  git clone https://github.com/anwenzen/anwenzen.github.io.git /var/website
 }
 
 config_file_init(){
@@ -154,13 +153,13 @@ run(){
 }
 
 
-echo -ne "${cyan}请手动确定类型${none}\n"
-echo -ne "${cyan}1.安装汉字工具包等${none}\n"
-echo -ne "${cyan}2.安装go环境${none}\n"
-echo -ne "${cyan}3.安装并构建caddy${none}\n"
-echo -ne "${cyan}4.构建caddy配置文件${none}\n"
-echo -ne "${cyan}5.构建clash配置文件${none}\n"
-echo -ne "${cyan}6.运行caddy\n>> ${none}"
+echo -ne "${cyan}switch one u want to do:${none}\n"
+echo -ne "${cyan}1.install chinese toolkit, etc.${none}\n"
+echo -ne "${cyan}2.instll golang env${none}\n"
+echo -ne "${cyan}3.build and install caddy${none}\n"
+echo -ne "${cyan}4.install website file${none}\n"
+echo -ne "${cyan}5.init config file in website${none}\n"
+echo -ne "${cyan}6.run caddy\n>> ${none}"
 read  step
 case "$step" in
   0)  update
