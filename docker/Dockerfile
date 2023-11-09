@@ -6,6 +6,6 @@ RUN chmod +x /docker_entrypoint.sh \
     && caddy add-package github.com/imgk/caddy-trojan
 EXPOSE 80
 EXPOSE 443
-
+EXPOSE 443/udp
 
 ENTRYPOINT ["/docker_entrypoint.sh"]
