@@ -24,6 +24,7 @@ services:
     network_mode: bridge
     ports:
       - 16800:16800
+      - 16800:16800/udp
       - 6888:6888
       - 6888:6888/udp
     restart: unless-stopped
@@ -83,7 +84,9 @@ services:
       - ${PWD}/acme:/data/caddy
     ports:
       - 80:80
+      - 80:80/udp
       - 443:443
+      - 443:443/udp
     networks:
       web:
         ipv4_address: 172.18.0.3
