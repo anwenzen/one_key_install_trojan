@@ -3,7 +3,7 @@ version: "3.8"
 services:
   aria2pro:
     container_name: aria2-pro
-    image: p3terx/aria2-pro
+    image: p3terx/aria2-pro:latest
     environment:
       - PUID=$UID
       - PGID=$GID
@@ -51,7 +51,7 @@ services:
 
   filebrowser:
     container_name: filebrowser
-    image: filebrowser/filebrowser
+    image: filebrowser/filebrowser:latest
     environment:
       - PUID=$UID
       - PGID=$GID
@@ -93,27 +93,6 @@ services:
     restart: unless-stopped
     depends_on:
       - filebrowser
-
-  hysteria:
-    container_name: hysteria
-    image: tobyxdd/hysteria
-    restart: always
-    # network_mode: "host"
-    ports:
-      - 8080:8080
-      - 8443:8443
-      - 8080:8080/udp
-      - 8443:8443/udp
-    volumes:
-      - ${PWD}/acme:/acme
-      - ${PWD}/config/hysteria.yaml:/etc/hysteria.yaml
-    command: ["server", "-c", "/etc/hysteria.yaml"]
-    networks:
-      web:
-        ipv4_address: 172.18.0.4
-    
-    depends_on:
-      - caddy
 
 networks:
   web:
