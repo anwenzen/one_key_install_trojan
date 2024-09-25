@@ -14,6 +14,12 @@ cat > /etc/caddy/Caddyfile <<EOF
 		no_proxy
 		users ${MYPASSWD}
 	}
+	log {
+		format console {
+			time_local
+			time_format wall
+		}
+	}
 }
 
 

@@ -7,8 +7,8 @@ ENV XDG_CONFIG_HOME /config
 ENV XDG_DATA_HOME /data
 ENV TZ Asia/Shanghai
 RUN apk add tzdata \
-    && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
-    && apk del tzdata
+    && cp /usr/share/zoneinfo/${TZ} /etc/localtime
+    # && apk del tzdata
 VOLUME /config
 VOLUME /data
 
